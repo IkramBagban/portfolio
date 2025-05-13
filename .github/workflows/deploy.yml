@@ -1,0 +1,52 @@
+name: Deployment
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22'
+
+      - name: Install dependencies & build
+        run: |
+          npm install
+          npm run build
+
+      - name: Upload to S3
+        uses: jakejarvis/s3-sync-action@master
+        with:
+          args: --delete
+        env:
+          AWS_S3_BUCKET: ${{ secrets.S3_WEB_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_USER_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_USER_SECRET_KEY }}
+          AWS_REGION: eu-north-1
+          SOURCE_DIR: dist
+          CACHE_CONTROL: "max-age=3600"
+
+      - name: Invalidate CloudFront cache using AWS CLI
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} \
+            --invalidation-batch '{
+              "Paths": {
+                "Quantity": 1,
+                "Items": [ "/*" ]
+              },
+              "CallerReference": "'"$(date +%s)"'"
+            }'
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_USER_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_USER_SECRET_KEY }}
+          AWS_REGION: "us-east-1"
