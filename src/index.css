@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+
+@font-face {
+  font-family: Lufga;
+  src: url("./assets/fonts/LufgaLight.ttf");
+}
+
+@theme {
+  --font-lufga: Lufga, 'sans-serif'
+}
