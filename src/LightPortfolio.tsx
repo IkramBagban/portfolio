@@ -730,8 +730,8 @@ export default function LightPortfolio({ isDarkMode, toggleDarkMode }: Props) {
                   "AWS",
                   "GitOps",
                   "ArgoCD",
-                  "EC2",
-                  "S3",
+                  // "EC2",
+                  // "S3",
                 ],
               },
             ].map((category, index) => (
