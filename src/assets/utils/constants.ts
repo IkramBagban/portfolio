@@ -23,7 +23,7 @@ export const SOCIAL_LINKS = [
     highlighted: true,
   },
   {
-    name: "Twitter",
+    name: "X",
     href: "https://twitter.com/Ikram_Bagban",
     icon: Twitter,
     username: "@Ikram_Bagban",
@@ -38,7 +38,7 @@ export const SOCIAL_LINKS = [
   },
   {
     name: "LinkedIn",
-    href: "https://linkedin.com/in/ikram-bagban",
+    href: "https://www.linkedin.com/in/ikram-bagban-254a57243/",
     icon: Linkedin,
     username: "ikram-bagban",
     highlighted: false,
